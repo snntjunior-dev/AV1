@@ -1,0 +1,112 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Estrutura para representar uma conta bancária
+typedef struct {
+    int numero;
+    float saldo;
+    int contan;
+} ContaBancaria;
+
+// Protótipos das funções
+void exibirMenu();
+void realizarDeposito(ContaBancaria *conta);
+void realizarSaque(ContaBancaria *conta);
+void exibirSaldo(ContaBancaria conta);
+
+int main() {
+    ContaBancaria conta;
+    int opcao;
+    int contan;
+
+    // Inicializando a conta
+    conta.numero = 12345; // Número fixo para simplicidade
+    conta.saldo = 0.0;
+    
+    printf("Digite o número da conta: ");
+    scanf("%i", &contan);
+    
+    do {
+        exibirMenu();
+        printf("Escolha uma opcao: ");
+        if (scanf("%d", &opcao) != 1) {
+            printf("Entrada inválida. Por favor, insira um número.\n");
+            while (getchar() != '\n'); // Limpar o buffer
+            continue;
+        }
+
+        switch (opcao) {
+            case 1:
+                printf("\n");
+                printf("Conta número: %i\n", contan);
+                realizarDeposito(&conta);
+                break;
+            case 2:
+                printf("\n");
+                printf("Conta número: %i\n", contan);
+                realizarSaque(&conta);
+                break;
+            case 3:
+                printf("\n");
+                printf("Conta número: %i\n", contan);
+                exibirSaldo(conta);
+                break;
+            case 4:
+                printf("Encerrando o programa. Obrigado por usar o simulador!\n");
+                break;
+            default:
+                printf("Opcao invalida! Tente novamente.\n");
+        }
+    } while (opcao != 4);
+
+    return 0;
+}
+
+// Função para exibir o menu de opções
+void exibirMenu() {
+    
+    printf("\n--- MENU ---\n");
+    printf("1. Deposito\n");
+    printf("2. Saque\n");
+    printf("3. Exibir Saldo\n");
+    printf("4. Sair\n");
+}
+
+// Função para realizar um depósito
+void realizarDeposito(ContaBancaria *conta) {
+    float valor;
+
+    printf("Digite o valor a ser depositado: R$ ");
+    if (scanf("%f", &valor) != 1 || valor <= 0) {
+        printf("Valor inválido! Insira um número positivo.\n");
+        while (getchar() != '\n'); // Limpar o buffer
+        return;
+    }
+
+    conta->saldo += valor;
+    printf("Deposito realizado com sucesso! Saldo atual: R$ %.2f\n", conta->saldo);
+}
+
+// Função para realizar um saque
+void realizarSaque(ContaBancaria *conta) {
+    float valor;
+
+    printf("Digite o valor a ser sacado: R$ ");
+    if (scanf("%f", &valor) != 1 || valor <= 0) {
+        printf("Valor inválido! Insira um número positivo.\n");
+        while (getchar() != '\n'); // Limpar o buffer
+        return;
+    }
+
+    if (valor > conta->saldo) {
+        printf("Saldo insuficiente! Saldo atual: R$ %.2f\n", conta->saldo);
+    } else {
+        conta->saldo -= valor;
+        printf("Saque realizado com sucesso! Saldo atual: R$ %.2f\n", conta->saldo);
+    }
+}
+
+// Função para exibir o saldo atual
+void exibirSaldo(ContaBancaria conta) {
+    printf("Saldo atual: R$ %.2f\n", conta.saldo);
+}
